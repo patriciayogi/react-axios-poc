@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const API = 'http://localhost:8080/jobs/skills/1';
+const API = 'http://localhost:8080/api/v1/skills';
 
-class App1 extends Component {
+class SkillList extends Component {
 
    constructor(props) {
       super(props);
@@ -11,7 +11,6 @@ class App1 extends Component {
       this.state = {
         skills: [],
         isLoading: false,
-        count: 0,
         error: null,
       };
    }
@@ -30,21 +29,8 @@ class App1 extends Component {
         }));
     }
 
-    addSkills() {
-      
-      axios.put(API)
-        .then(result => this.setState({
-          skills: result.data.skills,
-          isLoading: false
-        }))
-        .catch(error => this.setState({
-          error,
-          isLoading: false
-        }));
-    }
-
    render() {
-      const { count, skills, isLoading, error } = this.state;
+      const { skills, isLoading, error } = this.state;
 
       if (error) {
          return <p>{error.message}</p>;
@@ -55,13 +41,15 @@ class App1 extends Component {
       }
 
       return (
-         <div>
-            <p></p>
-					<label>
-						Name:
-						<input type="text"  onChange={this.stateHandleChange} /> 
-					</label>
-               <button onClick={addSkills()}>Save</button>
+         <div>            
+            <ul>
+            { 
+               skills.map(hit =>
+               <li key={hit.id}>
+                  <a href={hit.id}>{hit.id}-{hit.description}</a>
+               </li>
+            )}
+            </ul>
          </div>
        );
    }
@@ -69,4 +57,4 @@ class App1 extends Component {
 
 }
 
-export default App1;
+export default SkillList;
